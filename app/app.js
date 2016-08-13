@@ -8,6 +8,7 @@ import 'angular-ui-router';
 import run from './run';
 import config from './config';
 import registerDirectives from './directives';
+import registerViews from './views';
 
 const ngModule = angular.module('henry', [
     'ui.router',
@@ -19,4 +20,6 @@ const ngModule = angular.module('henry', [
 
 run(ngModule);
 config(ngModule);
+
+registerViews(ngModule);
 registerDirectives(ngModule);
