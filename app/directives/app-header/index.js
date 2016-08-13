@@ -5,10 +5,10 @@ export default ngModule => {
         require('./app-header.scss');
 
         return {
-            restrict: 'E',
+            controller,
+            restrict: 'AE',
             template: require('./app-header.html'),
             controllerAs: 'vm',
-            controller,
         };
     });
 };

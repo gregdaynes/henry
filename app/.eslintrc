@@ -2,6 +2,8 @@
     "extends": "airbnb-base",
     "rules": {
         "indent": ["error", 4],
-        "global-require": 0
+        "global-require": 0,
+        "no-use-before-define": ["error", { "functions": false, "classes": true }],
+        "no-param-reassign": 0
     }
 }
