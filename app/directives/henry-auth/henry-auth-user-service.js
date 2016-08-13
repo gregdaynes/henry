@@ -1,6 +1,5 @@
-export default function henryAuthService($rootScope, locker) {
+export default function henryAuthUserService($rootScope, locker, USER_UPDATE_MESSAGE) {
     const localStorage = locker.namespace('henry');
-    const USER_UPDATE_MESSAGE = 'userUpdateMessage';
     let user = null;
 
     return {
@@ -12,16 +11,21 @@ export default function henryAuthService($rootScope, locker) {
 
     // -------------------------
 
+    function _broadcast(data) {
+        $rootScope.$broadcast(USER_UPDATE_MESSAGE, {
+            data,
+        });
+    }
+
+    // -------------------------
+
     function set(data) {
         user = data;
         localStorage.put('user', data);
 
-        // publish event
-        $rootScope.$broadcast(USER_UPDATE_MESSAGE, {
-            user: data,
-        });
+        _broadcast(user);
 
-        return Promise.resolve().then(() => data);
+        return Promise.resolve().then(() => user);
     }
 
     function get() {
@@ -31,16 +35,14 @@ export default function henryAuthService($rootScope, locker) {
             user = localStorage.get('user');
         }
 
-        $rootScope.$broadcast(USER_UPDATE_MESSAGE, {
-            user,
-        });
+        _broadcast(user);
 
         return promise.then(() => user);
     }
 
     function onUpdate($scope, handler) {
         $scope.$on(USER_UPDATE_MESSAGE, (event, message) => {
-            handler(message.user);
+            handler(message.data);
         });
     }
 
@@ -48,9 +50,7 @@ export default function henryAuthService($rootScope, locker) {
         user = null;
         localStorage.empty();
 
-        $rootScope.$broadcast(USER_UPDATE_MESSAGE, {
-            user: false,
-        });
+        _broadcast(null);
 
         return Promise.resolve().then(() => user);
     }

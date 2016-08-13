@@ -1,4 +1,3 @@
 export default () => {
-    const vm = this;
-    console.log('test');
+    // const vm = this;
 };

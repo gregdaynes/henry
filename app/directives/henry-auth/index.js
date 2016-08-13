@@ -1,11 +1,13 @@
 import 'angular-locker';
 
 import angular from 'angular';
-import henryAuthService from './henry-auth-service';
+import henryAuthUserService from './henry-auth-user-service';
+import henryAuthGithubService from './henry-auth-github-service';
 import henryAuthController from './henry-auth-controller';
 
 export default angular.module('henry-auth', ['angular-locker'])
-    .factory('henryAuthService', henryAuthService)
+    .factory('henryAuthUserService', henryAuthUserService)
+    .factory('henryAuthGithubService', henryAuthGithubService)
     .directive('henryAuth', () => {
         require('./henry-auth-style.scss');
 

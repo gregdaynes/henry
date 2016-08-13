@@ -1,17 +1,17 @@
 import Github from 'github-api';
 
-export default function henryAuthController($scope, $log, henryAuthService) {
+export default function henryAuthController($scope, $log, henryAuthUserService, henryAuthGithubService) {
     const vm = this;
 
-    vm.authorized = false;
-    vm.loading = false;
+    // vm.authorized = false;
+    // vm.loading = false;
 
     vm.login = login;
     vm.logout = logout;
 
     init();
 
-    henryAuthService.onUpdate($scope, data => {
+    henryAuthUserService.onUpdate($scope, data => {
         vm.loading = false;
         if (!data) {
             vm.authorized = false;
@@ -21,11 +21,16 @@ export default function henryAuthController($scope, $log, henryAuthService) {
         }
     });
 
+    henryAuthGithubService.onUpdate($scope, data => {
+        data.getUser().listRepos()
+            .then(response => { console.log(response); });
+    });
+
     // -------------------------
 
     function init() {
         vm.loading = true;
-        return henryAuthService.get()
+        return henryAuthUserService.get()
             .then(response => {
                 if (!response) vm.authorized = false;
                 else vm.authorized = response;
@@ -36,15 +41,23 @@ export default function henryAuthController($scope, $log, henryAuthService) {
     function login() {
         vm.loading = true;
 
-        return new Github({
+        // creat github auth wrapper
+        const gh = new Github({
             username: vm.username,
             password: vm.password,
-        })
-        .getUser()
+        });
+
+        // store auth github wrapper
+        henryAuthGithubService.set(gh);
+
+        // get logged in user and store
+        gh.getUser()
         .getProfile()
-            .then(user => henryAuthService.set(user))
+            .then(user => henryAuthUserService.set(user))
             .catch(() => {
+                // user is not authorized, unset github auth wrapper
                 vm.loading = false;
+                henryAuthGithubService.unset();
                 $log.error('Error logging in');
             });
     }
@@ -52,6 +65,12 @@ export default function henryAuthController($scope, $log, henryAuthService) {
 
     function logout() {
         vm.loading = true;
-        return henryAuthService.unset();
+
+        const promises = [
+            henryAuthGithubService.unset(),
+            henryAuthUserService.unset(),
+        ];
+
+        return Promise.all(promises);
     }
 }

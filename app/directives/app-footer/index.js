@@ -5,7 +5,7 @@ export default ngModule => {
         require('./app-footer.scss');
 
         return {
-            restrict: 'E',
+            restrict: 'AE',
             template: require('./app-footer.html'),
             controllerAs: 'vm',
             controller,
