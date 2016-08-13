@@ -3,38 +3,52 @@ import Github from 'github-api';
 export default function henryAuthController($scope, $log, henryAuthUserService, henryAuthGithubService) {
     const vm = this;
 
-    // vm.authorized = false;
-    // vm.loading = false;
+    vm.authorized = false;
+    vm.loading = false;
 
     vm.login = login;
     vm.logout = logout;
 
     init();
 
-    henryAuthUserService.onUpdate($scope, data => {
-        vm.loading = false;
-        if (!data) {
-            vm.authorized = false;
-        } else {
-            vm.authorized = data;
-            $scope.$apply();
+    henryAuthGithubService.onUpdate($scope, data => {
+        if (!data) vm.authorized = false;
+        else {
+            vm.authorized = true;
+            vm.loading = false;
         }
     });
 
-    henryAuthGithubService.onUpdate($scope, data => {
-        data.getUser().listRepos()
-            .then(response => { console.log(response); });
-    });
+    // -------------------------
+
+    function _authorized() {
+        vm.authorized = true;
+        vm.loading = false;
+    }
+
+    function _unauthorized() {
+        vm.authorized = false;
+        vm.loading = false;
+        henryAuthGithubService.unset();
+        henryAuthUserService.unset();
+    }
 
     // -------------------------
 
     function init() {
         vm.loading = true;
-        return henryAuthUserService.get()
+        const promises = [
+            henryAuthUserService.get(),
+            henryAuthGithubService.get(),
+        ];
+
+        return Promise.all(promises)
             .then(response => {
-                if (!response) vm.authorized = false;
-                else vm.authorized = response;
-                vm.loading = false;
+                if (!response[1]) _unauthorized();
+                else _authorized();
+            })
+            .catch(() => {
+                _unauthorized();
             });
     }
 
@@ -42,24 +56,20 @@ export default function henryAuthController($scope, $log, henryAuthUserService, 
         vm.loading = true;
 
         // creat github auth wrapper
-        const gh = new Github({
+        const github = new Github({
             username: vm.username,
             password: vm.password,
         });
 
         // store auth github wrapper
-        henryAuthGithubService.set(gh);
+        henryAuthGithubService.set(github);
 
         // get logged in user and store
-        gh.getUser()
-        .getProfile()
-            .then(user => henryAuthUserService.set(user))
-            .catch(() => {
-                // user is not authorized, unset github auth wrapper
-                vm.loading = false;
-                henryAuthGithubService.unset();
-                $log.error('Error logging in');
-            });
+        github
+            .getUser()
+            .getProfile()
+                .then(user => henryAuthUserService.set(user))
+                .catch(() => _unauthorized());
     }
 
 
@@ -71,6 +81,7 @@ export default function henryAuthController($scope, $log, henryAuthUserService, 
             henryAuthUserService.unset(),
         ];
 
-        return Promise.all(promises);
+        return Promise.all(promises)
+            .then(() => _unauthorized());
     }
 }
