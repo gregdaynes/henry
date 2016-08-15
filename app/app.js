@@ -17,6 +17,6 @@ const ngModule = angular.module('henry', [
 run(ngModule);
 config(ngModule);
 
-registerConstants(ngModule)
+registerConstants(ngModule);
 registerViews(ngModule);
 registerDirectives(ngModule);

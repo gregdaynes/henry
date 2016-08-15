@@ -1,7 +1,7 @@
-import registerAppFooter from './app-footer';
-import registerAppHeader from './app-header';
+// import registerAppFooter from './app-footer';
+// import registerAppHeader from './app-header';
 
-export default ngModule => {
-    registerAppFooter(ngModule);
-    registerAppHeader(ngModule);
-};
+export default function(ngModule) {
+    // registerAppFooter(ngModule);
+    // registerAppHeader(ngModule);
+}

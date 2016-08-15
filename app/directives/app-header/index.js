@@ -1,14 +1,14 @@
-import controller from './app-header.js';
+import appHeaderController from './app-header';
 
-export default ngModule => {
+export default function (ngModule) {
     ngModule.directive('appHeader', () => {
         require('./app-header.scss');
 
         return {
-            controller,
             restrict: 'AE',
             template: require('./app-header.html'),
             controllerAs: 'vm',
+            controller: appHeaderController,
         };
     });
-};
+}

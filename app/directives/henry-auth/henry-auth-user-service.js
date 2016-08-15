@@ -29,15 +29,13 @@ export default function henryAuthUserService($rootScope, locker, USER_UPDATE_MES
     }
 
     function get() {
-        const promise = Promise.resolve();
-
         if (!user) { // no cached auth
             user = localStorage.get('user');
         }
 
         _broadcast(user);
 
-        return promise.then(() => user);
+        return Promise.resolve().then(() => user);
     }
 
     function onUpdate($scope, handler) {

@@ -1,4 +1,4 @@
-import controller from './app-footer.js';
+import appFooterController from './app-footer';
 
 export default ngModule => {
     ngModule.directive('appFooter', () => {
@@ -8,7 +8,7 @@ export default ngModule => {
             restrict: 'AE',
             template: require('./app-footer.html'),
             controllerAs: 'vm',
-            controller,
+            controller: appFooterController,
         };
     });
 };
