@@ -1,4 +1,4 @@
-export default function henryAuthUserService($rootScope, locker, USER_UPDATE_MESSAGE) {
+export default function UserService($rootScope, locker, USER_UPDATE_MESSAGE) {
     const localStorage = locker.namespace('henry');
     let user = null;
 

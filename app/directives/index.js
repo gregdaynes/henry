@@ -1,7 +1,5 @@
-// import registerAppFooter from './app-footer';
-// import registerAppHeader from './app-header';
+import registerLoginForm from './login-form';
 
-export default function(ngModule) {
-    // registerAppFooter(ngModule);
-    // registerAppHeader(ngModule);
-}
+export default ngModule => {
+    registerLoginForm(ngModule);
+};

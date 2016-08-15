@@ -1,4 +1,4 @@
-<div ng-if="!vm.authorized">
+<div ng-if="!vm.state">
     <div>
         <input ng-model="vm.username" placeholder="Username">
     </div>
@@ -7,9 +7,9 @@
         <input ng-model="vm.password" type="password">
     </div>
 
-    <button ng-click="vm.login()" ng-disabled="vm.loading">Login</button>
+    <button ng-click="vm.login(vm.username, vm.password)">Login</button>
 </div>
 
-<div ng-if="vm.authorized">
+<div ng-if="vm.state">
     <button ng-click="vm.logout()">Logout</button>
 </div>
