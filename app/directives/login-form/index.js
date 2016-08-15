@@ -14,9 +14,9 @@ export default ngModule => {
             template: require('./template.html'),
             controllerAs: 'vm',
             bindToController: true,
-            link: (scope, element, attrs, vm) => {
-                console.log(scope, element, attrs, vm);
-            },
+            // link: (scope, element, attrs, vm) => {
+                // console.log(scope, element, attrs, vm);
+            // },
         };
     });
 };

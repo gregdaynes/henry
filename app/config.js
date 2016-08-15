@@ -1,7 +1,7 @@
 import 'angular-ui-router';
 
 export default ngModule => {
-    ngModule.config(($stateProvider, $urlRouterProvider, $httpProvider, $compileProvider) => {
+    ngModule.config(($stateProvider, $urlRouterProvider) => {
         $urlRouterProvider.otherwise('/login');
 
         // $comileProvider.aHrefSanitizationWhitelist(/^\s*(data|https?|http):/);
@@ -11,6 +11,10 @@ export default ngModule => {
                 url: '',
                 abstract: true,
                 pageTitle: 'Meet Henry',
+                views: {
+                    header: { template: require('./views/header/template.html') },
+                    footer: { template: require('./views/footer/template.html') },
+                },
             });
     });
 };
