@@ -1,4 +1,4 @@
-export default function loginViewController($scope, $log, $user, $github) {
+export default function loginViewController($scope, $log, $user, $github, $location) {
     const vm = this;
 
     vm.authorized = false;
@@ -6,56 +6,36 @@ export default function loginViewController($scope, $log, $user, $github) {
     vm.login = login;
     vm.logout = logout;
 
-    vm.test = test;
-    
-    function test() {
-        const user = $github();
-        console.log(user.getUser());
-    }
-
     function login(username, password) {
         $log.info('logging in');
 
-        const github = new $github({ username, password });
-        console.log(github);
+        const github = $github(username, password);
+        const user = github.getUser();
 
-
-        // const promises = [
-        //     $github.set(github),
-        //     getUser(github),
-        // ];
-        //
-        // return Promise.all(promises)
-        //     .then(() => {
-        //         vm.authorized = true;
-        //         $scope.$apply();
-        //     });
+        user.getProfile()
+            .then(loginSuccess, loginFailure)
+            .then(() => $scope.$apply())
+            .then(() => $location.path('/list-repo'));
     }
 
     function logout() {
         $log.info('logging out');
-
-        // const promises = [
-        //     $github.unset(),
-        //     $user.unset(),
-        // ];
-        //
-        // return Promise.all(promises)
-        //     .then(() => {
-        //         vm.authorized = false;
-        //         $scope.$apply();
-        //     });
+        $github('logout');
+        vm.authorized = false;
     }
 
-    // Internal functions
-    // -------------------------
-    function getUser(github) {
-        // return github.getUser()
-        //     .getProfile()
-        //     .then(user => $user.set(user))
-        //     .catch(() => {
-        //         $github.unset();
-        //         $log.error('Error logging in');
-        //     });
+    function loginSuccess(userProfile) {
+        return $user.set(userProfile.data)
+            .then(response => { 
+                vm.authorized = true;
+                return true;
+            });
     }
+
+    function loginFailure(err) {
+        $log.error(err);
+        $github('logout');
+        throw new Error(err);
+    }
+
 }

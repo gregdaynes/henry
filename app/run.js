@@ -1,11 +1,10 @@
 export default ngModule => {
-    ngModule.run(($log, $rootScope, $state, $stateParams) => {
+    ngModule.run(($log, $rootScope, $state, $stateParams, $location, $github) => {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
 
         $log.info('running..');
 
-        // henryAuthService.get()
-            // .then(response => { console.log(response); });
+        if (!$github()) $location.path('/login');
     });
 };
