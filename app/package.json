@@ -4,8 +4,8 @@
   "description": "A jekyll editor for the browser",
   "main": "index.js",
   "scripts": {
-    "init": "if [ ! -d ./_build ]; then mkdir _build; fi; cp index.html _build/index.html",
-    "start": "npm run init && ./node_modules/.bin/webpack-dev-server -d --progress --colors --watch",
+    "init": "if [ ! -d ./_build ]; then mkdir _build; fi; cp index.html _build/index.html; cp henry.config.json _build/config.json",
+    "start": "npm run init && ./node_modules/.bin/webpack-dev-server -d --progress --colors --watch --content-base _build/",
     "dev": "./node_modules/.bin/webpack-dev-server -d --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

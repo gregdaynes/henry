@@ -15,7 +15,7 @@ export default function loginViewController($scope, $log, $user, $github, $locat
         user.getProfile()
             .then(loginSuccess, loginFailure)
             .then(() => $scope.$apply())
-            .then(() => $location.path('/list-repo'));
+            .then(() => $location.path('/repo'));
     }
 
     function logout() {
@@ -26,7 +26,7 @@ export default function loginViewController($scope, $log, $user, $github, $locat
 
     function loginSuccess(userProfile) {
         return $user.set(userProfile.data)
-            .then(response => { 
+            .then(() => {
                 vm.authorized = true;
                 return true;
             });
@@ -37,5 +37,4 @@ export default function loginViewController($scope, $log, $user, $github, $locat
         $github('logout');
         throw new Error(err);
     }
-
 }

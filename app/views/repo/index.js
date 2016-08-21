@@ -2,10 +2,10 @@ import controller from './controller';
 
 export default ($stateProvider) => {
     $stateProvider
-        .state('root.listRepo', {
-            url: '/list-repo',
-            current: 'list-repo',
-            pageTitle: 'Repository List',
+        .state('root.repo', {
+            url: '/repo',
+            current: 'repo',
+            pageTitle: 'Repository',
             views: {
                 '@': {
                     template: require('./template.html'),
@@ -14,10 +14,8 @@ export default ($stateProvider) => {
                 },
             },
             resolve: {
-                user: function($user) {
-                    return $user.get()
-                        .then(response => response);
-                },
-            }
+                user: $user => $user.get(),
+                config: $config => $config.get(),
+            },
         });
 };

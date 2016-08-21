@@ -1,0 +1,7 @@
+<button ng-click="vm.getParentContents()">..</button>
+{{ vm.currentPath }} 
+<ul>
+    <li ng-repeat="item in vm.list">
+        <a ng-click="vm.openItem(item, item.type)">{{ item.type }} {{ item.name }}</a>
+    </li>
+</ul>

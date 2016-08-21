@@ -1,7 +1,7 @@
 import login from './login';
-import listRepo from './list-repo';
+import repo from './repo';
 
 export default ngModule => {
     ngModule.config(login);
-    ngModule.config(listRepo);
+    ngModule.config(repo);
 };
