@@ -1,4 +1,4 @@
-export default function repoController($scope, $log, $user, $github, $location, user, config) {
+export default function repoController($scope, $log, $user, $github, $location, $file, user, config) {
     const vm = this;
 
     vm.list = null;
@@ -17,7 +17,20 @@ export default function repoController($scope, $log, $user, $github, $location, 
     }
 
     function openItem(item) {
-        getContents(item.path);
+        if (item.type === 'dir') getContents(item.path);
+        if (item.type === 'file') getFileContents(item);
+    }
+
+    function getFileContents(item) {
+        vm.currentPath = item.path;
+
+        return gh.getContents(config.data.branch, item.path)
+            .then(response => $file(response))
+            .then(response => {
+                // vm.list = response.data;
+                // $scope.$apply();
+            })
+            .catch(err => { throw new Error(err); });
     }
 
     function getContents(path) {

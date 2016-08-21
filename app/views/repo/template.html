@@ -3,5 +3,6 @@
 <ul>
     <li ng-repeat="item in vm.list">
         <a ng-click="vm.openItem(item, item.type)">{{ item.type }} {{ item.name }}</a>
+        {{ item }}
     </li>
 </ul>
