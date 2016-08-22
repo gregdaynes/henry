@@ -14,15 +14,11 @@ const fileTypes = {
 };
 
 export default () => {
-    return function file() {
-        // console.log(file);
-
-        determinType(file.data.name)
-            .then(response => {
-                console.log(response);
-            });
-
-        return Promise.resolve().then(() => file);
+    return function processFile(file) {
+        return Promise.all([
+            determinType(file.data.name),
+        ])
+        .then(() => file);
     };
 
 
