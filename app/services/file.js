@@ -15,12 +15,9 @@ const fileTypes = {
 
 export default () => {
     return function processFile(file) {
-        return Promise.all([
-            determinType(file.data.name),
-        ])
-        .then(() => file);
+        return determinType(file.data.name)
+            .then(type => [type, file]);
     };
-
 
     function determinType(filename) {
         const ext = filename.split('.').pop();

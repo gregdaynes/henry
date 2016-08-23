@@ -1,4 +1,4 @@
-export default function repoController($scope, $log, $user, $github, $location, $file, user, config) {
+export default function repoController($scope, $log, $user, $github, $location, $file, $state, user, config) {
     const vm = this;
 
     vm.list = null;
@@ -27,6 +27,8 @@ export default function repoController($scope, $log, $user, $github, $location, 
         return gh.getContents(config.data.branch, item.path)
             .then(response => $file(response))
             .then(response => {
+                console.log(response);
+                $state.go('root.repo.editor');
                 // vm.list = response.data;
                 // $scope.$apply();
             })
