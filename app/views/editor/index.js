@@ -2,8 +2,8 @@ import controller from './editor.controller';
 
 export default ($stateProvider) => {
     $stateProvider
-        .state('root.repo.editor', {
-            url: '/repo/editor',
+        .state('repo.editor', {
+            url: '/editor',
             current: 'editor',
             pageTitle: 'Editor',
             views: {
