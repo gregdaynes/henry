@@ -1,11 +1,10 @@
 const fileTypes = {
-    text: [
-        'text',
-        'md',
-        'css',
-        'js',
-        // 'html',
-    ],
+    markdown: ['md', 'markdown'],
+    javascript: ['js'],
+    text: ['text'],
+    css: ['css', 'scss', 'less'],
+    html: ['html'],
+    xml: ['xml'],
     image: [
         'png',
         'svg',
