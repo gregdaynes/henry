@@ -1,9 +1,8 @@
-export default function repoController($scope, $log, $user, $github, $location, $file, $state, user, config) {
+export default function repoController($scope, $log, $user, $github, $location, $file, $state, user, config, $stateParams) {
     const vm = this;
 
     vm.list = null;
     vm.currentPath = null;
-
 
     vm.openItem = openItem;
     vm.getParentContents = getParentContents;
@@ -28,7 +27,8 @@ export default function repoController($scope, $log, $user, $github, $location, 
             .then(response => $file(response))
             .then(response => {
                 console.log(response);
-                $state.go('root.repo.editor');
+                $stateParams.data = response;
+                $state.go('root.repo.view');
                 // vm.list = response.data;
                 // $scope.$apply();
             })
