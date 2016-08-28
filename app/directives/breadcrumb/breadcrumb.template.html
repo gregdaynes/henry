@@ -1,0 +1,6 @@
+<ul>
+    <li ng-repeat="(index, item) in vm.currentPath track by index">
+        <a ng-click="vm.jumpToIndex(index)" ng-if="index < vm.currentPath.length - 1"> {{ item }}</a>
+        <span ng-if="index >= vm.currentPath.length - 1">{{ item }}</span>
+    </li>
+</ul>

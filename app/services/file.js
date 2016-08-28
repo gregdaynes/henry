@@ -1,6 +1,12 @@
+import 'codemirror/mode/gfm/gfm.js';
+import 'codemirror/mode/javascript/javascript.js';
+import 'codemirror/mode/css/css.js';
+import 'codemirror/mode/htmlmixed/htmlmixed.js';
+import 'codemirror/mode/xml/xml.js';
+
 const fileTypes = {
     markdown: ['md', 'markdown'],
-    javascript: ['js'],
+    javascript: ['js', 'json'],
     text: ['text'],
     css: ['css', 'scss', 'less'],
     html: ['html'],

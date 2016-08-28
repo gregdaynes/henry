@@ -7,7 +7,10 @@ export default ($stateProvider) => {
             current: 'list',
             pageTitle: 'Repository List',
             views: {
-                '@': {
+                breadcrumb: {
+                    template: '<div breadcrumb></div>',
+                },
+                '': {
                     controller,
                     controllerAs: 'vm',
                     template: require('./template.html'),
