@@ -18,10 +18,10 @@ export default function BreadcrumbService($rootScope, BREADCRUMB_UPDATE_MESSAGE)
 
     // -------------------------
 
-    function set(data) {
+    function set(data, broadcast) {
         breadcrumb = data;
 
-        _broadcast(breadcrumb);
+        if (broadcast !== false) _broadcast(breadcrumb);
 
         return Promise.resolve().then(() => breadcrumb);
     }

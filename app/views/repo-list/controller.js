@@ -4,9 +4,10 @@ export default function repoController($scope, $log, $user, $github, $location, 
     vm.list = null;
     vm.currentPath = null;
 
-    vm.openItem = openItem;
-
     const gh = $github().getRepo(user.login, config.data.repo);
+
+    vm.openItem = openItem;
+    vm.newFile = newFile;
 
     init();
 
@@ -29,7 +30,7 @@ export default function repoController($scope, $log, $user, $github, $location, 
         return gh.getContents(config.data.branch, item.path)
             .then(response => $file(response))
             .then(response => {
-                $state.go('root.repo.view', { file: response });
+                $state.go('root.repo.code', { file: response });
                 // vm.list = response.data;
                 // $scope.$apply();
             })
@@ -43,5 +44,17 @@ export default function repoController($scope, $log, $user, $github, $location, 
                 $scope.$apply();
             })
             .catch(err => { throw new Error(err); });
+    }
+
+    function newFile() {
+        const file = ['text', { data: { name: 'new file.txt' } }];
+        $breadcrumb.get()
+            .then(response => {
+                file[1].data.path = response;
+                return $breadcrumb.set(`${response}/new file.txt`, false);
+            })
+            .then(() => {
+                $state.go('root.repo.code', { file });
+            });
     }
 }
