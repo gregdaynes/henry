@@ -32,8 +32,15 @@ export default function repoViewController($scope, $log, $user, $github, $locati
     }
 
     function save() {
-        const newFile = `${file[1].data.path}/${vm.file.data.name}`;
+        const newFile = preparePath();
 
         gh.writeFile(config.data.branch, newFile, vm.file.data.contents, '', { encode: true });
+    }
+
+    function preparePath() {
+        const existingPath = file[1].data.path.split('/');
+        if (existingPath[existingPath.length - 1] === vm.file.data.name) return file[1].data.path;
+
+        return `${file[1].data.path}/${vm.file.data.name}`;
     }
 }
