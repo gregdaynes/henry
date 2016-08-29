@@ -1,6 +1,8 @@
 import controller from './login.controller';
 
 export default ($stateProvider) => {
+    'ngInject';
+
     $stateProvider
         .state('root.login', {
             url: '/login',

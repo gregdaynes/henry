@@ -1,4 +1,6 @@
 export default function repoController($scope, $log, $user, $github, $location, $file, $state, $breadcrumb, user, config) {
+    'ngInject';
+
     const vm = this;
 
     vm.list = null;

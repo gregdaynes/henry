@@ -1,5 +1,6 @@
 export default ngModule => {
-    ngModule.run(($log, $rootScope, $state, $stateParams, $location, $github, $config) => {
+    ngModule.run(($log, $rootScope, $state, $stateParams, $location, $github) => {
+        'ngInject';
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
 
@@ -7,6 +8,6 @@ export default ngModule => {
 
         if (!$github()) $location.path('/login');
 
-        $config.get();
+        // $config.get();
     });
 };

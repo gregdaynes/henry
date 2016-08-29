@@ -1,4 +1,6 @@
 export default function loginViewController($scope, $log, $user, $github, $location, $state) {
+    'ngInject';
+
     const vm = this;
 
     vm.authorized = false;
