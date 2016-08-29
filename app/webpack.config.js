@@ -1,7 +1,9 @@
+const webpack = require('webpack');
+
 module.exports = {
     entry: './app.js',
     output: {
-        path: __dirname +'/_build',
+        path: __dirname + '/_build',
         filename: 'henry.js',
     },
     module: {
@@ -12,4 +14,8 @@ module.exports = {
             { test: /\.scss$/, loader: 'style!css!sass', exclude: /node_modules/ },
         ],
     },
+
+    // plugins: [
+    //     new webpack.optimize.UglifyJsPlugin(),
+    // ],
 };
