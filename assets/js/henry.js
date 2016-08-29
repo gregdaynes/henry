@@ -47120,7 +47120,7 @@
 	    var vm = this;
 
 	    vm.list = null;
-	    vm.currentPath = null;
+	    vm.currentPath = '';
 
 	    var gh = $github().getRepo(user.login, config.data.repo);
 
@@ -47247,8 +47247,6 @@
 	function repoViewController($scope, $log, $user, $github, $location, $file, $state, $breadcrumb, user, config, file) {
 	    var vm = this;
 	    vm.file = file[1];
-	    var originalFilename = angular.copy(file[1].data.name); /* global angular */
-	    var originalPath = angular.copy(file[1].data.path);
 
 	    vm.codemirrorConfig = {
 	        lineNumbers: true,
@@ -47279,34 +47277,9 @@
 	    }
 
 	    function save() {
-	        var path = void 0;
+	        var newFile = file[1].data.path + '/' + vm.file.data.name;
 
-	        if (originalFilename === vm.file.data.name) {
-	            path = Promise.resolve().then(function () {
-	                return originalPath;
-	            });
-	        } else {
-	            path = moveFile();
-	        }
-
-	        return path.then(function (response) {
-	            return gh.writeFile(config.data.branch, response, vm.file.data.contents, 'testing', { encode: true });
-	        }).then(function (response) {
-	            console.log(response);
-	        });
-	    }
-
-	    function updatePath() {
-	        var path = file[1].data.path.split('/');
-	        path[path.length - 1] = vm.file.data.name;
-
-	        return path.join('/');
-	    }
-
-	    function moveFile() {
-	        var updatedPath = updatePath();
-
-	        return gh.move(config.data.branch, originalPath, updatedPath);
+	        gh.writeFile(config.data.branch, newFile, vm.file.data.contents, '', { encode: true });
 	    }
 	}
 
