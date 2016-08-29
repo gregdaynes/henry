@@ -1,8 +1,6 @@
 export default function repoViewController($scope, $log, $user, $github, $location, $file, $state, $breadcrumb, user, config, file) {
     const vm = this;
     vm.file = file[1];
-    const originalFilename = angular.copy(file[1].data.name); /* global angular */
-    const originalPath = angular.copy(file[1].data.path);
 
     vm.codemirrorConfig = {
         lineNumbers: true,
@@ -34,31 +32,8 @@ export default function repoViewController($scope, $log, $user, $github, $locati
     }
 
     function save() {
-        let path;
+        const newFile = `${file[1].data.path}/${vm.file.data.name}`;
 
-        if (originalFilename === vm.file.data.name) {
-            path = Promise.resolve().then(() => originalPath);
-        } else {
-            path = moveFile();
-        }
-
-        return path
-            .then(response => gh.writeFile(config.data.branch, response, vm.file.data.contents, 'testing', { encode: true }))
-            .then(response => {
-                console.log(response);
-            });
-    }
-
-    function updatePath() {
-        const path = file[1].data.path.split('/');
-        path[path.length - 1] = vm.file.data.name;
-
-        return path.join('/');
-    }
-
-    function moveFile() {
-        const updatedPath = updatePath();
-
-        return gh.move(config.data.branch, originalPath, updatedPath);
+        gh.writeFile(config.data.branch, newFile, vm.file.data.contents, '', { encode: true });
     }
 }

@@ -2,7 +2,7 @@ export default function repoController($scope, $log, $user, $github, $location, 
     const vm = this;
 
     vm.list = null;
-    vm.currentPath = null;
+    vm.currentPath = '';
 
     const gh = $github().getRepo(user.login, config.data.repo);
 
