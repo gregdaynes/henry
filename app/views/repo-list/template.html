@@ -1,0 +1,9 @@
+<div>
+    <button ng-click="vm.newFile()"></div>
+</div>
+
+<ul>
+    <li ng-repeat="item in vm.list">
+        <a ng-click="vm.openItem(item, item.type)">{{ item.name }}</a>
+    </li>
+</ul>
