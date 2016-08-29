@@ -5,19 +5,23 @@ export default function repoController($scope, $log, $user, $github, $location, 
     vm.currentPath = null;
 
     vm.openItem = openItem;
-    vm.getParentContents = getParentContents;
 
     const gh = $github().getRepo(user.login, config.data.repo);
 
     init();
 
+    $breadcrumb.onUpdate($scope, (data) => {
+        getContents(data);
+    });
+
     function init() {
-        getContents();
+        $breadcrumb.get()
+            .then(response => getContents(response));
     }
 
     function openItem(item) {
         $breadcrumb.set(item.path);
-        if (item.type === 'dir') getContents(item.path);
+        // if (item.type === 'dir') getContents(item.path);
         if (item.type === 'file') getFileContents(item);
     }
 
@@ -39,11 +43,5 @@ export default function repoController($scope, $log, $user, $github, $location, 
                 $scope.$apply();
             })
             .catch(err => { throw new Error(err); });
-    }
-
-    function getParentContents() {
-        const path = vm.currentPath.split('/');
-        path.splice(path.length - 1, 1);
-        return getContents(path.join('/'));
     }
 }

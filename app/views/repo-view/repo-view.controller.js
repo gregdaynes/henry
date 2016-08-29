@@ -1,4 +1,4 @@
-export default function repoViewController($scope, $log, $user, $github, $location, $file, $state, user, config, file) {
+export default function repoViewController($scope, $log, $user, $github, $location, $file, $state, $breadcrumb, user, config, file) {
     const vm = this;
     vm.details = {
         name: file[1].data.name,
@@ -18,6 +18,11 @@ export default function repoViewController($scope, $log, $user, $github, $locati
     const gh = $github().getRepo(user.login, config.data.repo);
 
     init();
+
+    $breadcrumb.onUpdate($scope, (data) => {
+        console.log(data);
+        $state.go('root.repo.list');
+    });
 
     function init() {
         gh.getBlob(file[1].data.sha)

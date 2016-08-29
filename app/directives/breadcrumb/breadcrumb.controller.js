@@ -1,12 +1,14 @@
 export default function BreadcrumController($scope, $breadcrumb) {
     const vm = this;
-    vm.currentPath = ['/'];
+    vm.currentPath = [];
 
     vm.jumpToIndex = jumpToIndex;
 
     init();
 
-    $breadcrumb.onUpdate($scope, (data) => prepareBreadcrumbs(data));
+    $breadcrumb.onUpdate($scope, (data) => {
+        return prepareBreadcrumbs(data);
+    });
 
     function init() {
         return $breadcrumb.get()
@@ -14,17 +16,15 @@ export default function BreadcrumController($scope, $breadcrumb) {
     }
 
     function prepareBreadcrumbs(path) {
-        if (!path) {
-            vm.currentPath = ['/'];
-            return;
-        }
-
-        vm.currentPath = path.split('/');
-
-        if (vm.currentPath[0] !== '/') vm.currentPath.unshift('/');
+        if (path) vm.currentPath = path.split('/');
     }
 
-    function jumpToIndex(index) {
-        vm.currentPath = vm.currentPath.slice(0, index);
+    function jumpToIndex(index, root) {
+        let newPath = [];
+
+        if (!root) newPath = vm.currentPath.slice(0, index + 1);
+
+        vm.currentPath = newPath;
+        $breadcrumb.set(newPath.join('/'));
     }
 }

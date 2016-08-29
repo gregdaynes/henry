@@ -27,8 +27,6 @@ export default function BreadcrumbService($rootScope, BREADCRUMB_UPDATE_MESSAGE)
     }
 
     function get() {
-        _broadcast(breadcrumb);
-
         return Promise.resolve().then(() => breadcrumb);
     }
 
