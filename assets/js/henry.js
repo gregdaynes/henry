@@ -47277,9 +47277,16 @@
 	    }
 
 	    function save() {
-	        var newFile = file[1].data.path + '/' + vm.file.data.name;
+	        var newFile = preparePath();
 
 	        gh.writeFile(config.data.branch, newFile, vm.file.data.contents, '', { encode: true });
+	    }
+
+	    function preparePath() {
+	        var existingPath = file[1].data.path.split('/');
+	        if (existingPath[existingPath.length - 1] === vm.file.data.name) return file[1].data.path;
+
+	        return file[1].data.path + '/' + vm.file.data.name;
 	    }
 	}
 
