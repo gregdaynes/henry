@@ -1,4 +1,6 @@
 export default function UserService($rootScope, locker, USER_UPDATE_MESSAGE) {
+    'ngInject';
+
     const localStorage = locker.namespace('henry');
     let user = null;
 

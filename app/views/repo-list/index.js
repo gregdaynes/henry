@@ -1,6 +1,8 @@
 import controller from './controller';
 
 export default ($stateProvider) => {
+    'ngInject';
+
     $stateProvider
         .state('root.repo.list', {
             url: '/list',

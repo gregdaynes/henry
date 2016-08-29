@@ -1,4 +1,6 @@
 export default function BreadcrumbService($rootScope, BREADCRUMB_UPDATE_MESSAGE) {
+    'ngInject';
+
     let breadcrumb = null;
 
     return {

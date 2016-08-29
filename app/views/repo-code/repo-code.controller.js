@@ -1,4 +1,6 @@
 export default function repoViewController($scope, $log, $user, $github, $location, $file, $state, $breadcrumb, user, config, file) {
+    'ngInject';
+
     const vm = this;
     vm.file = file[1];
 

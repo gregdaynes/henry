@@ -1,6 +1,8 @@
 import controller from './repo-code.controller';
 
 export default ($stateProvider) => {
+    'ngInject';
+
     require('codemirror/lib/codemirror.css');
     require('codemirror/theme/neo.css');
 

@@ -1,4 +1,6 @@
 export default function BreadcrumController($scope, $breadcrumb) {
+    'ngInject';
+
     const vm = this;
     vm.currentPath = [];
 

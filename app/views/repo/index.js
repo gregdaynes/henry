@@ -1,4 +1,6 @@
 export default ($stateProvider) => {
+    'ngInject';
+
     $stateProvider
         .state('root.repo', {
             url: '/repo',

@@ -7,7 +7,8 @@
     "init": "if [ ! -d ./_build ]; then mkdir _build; fi; cp index.html _build/index.html; cp henry.config.json _build/config.json",
     "start": "npm run init && ./node_modules/.bin/webpack-dev-server -d --progress --colors --watch --content-base _build/",
     "dev": "./node_modules/.bin/webpack-dev-server -d --progress --colors",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "NODE_ENV=production node ./node_modules/.bin/webpack && npm run init"
   },
   "author": "Gregory Daynes",
   "license": "Apache-2.0",
@@ -22,6 +23,7 @@
     "eslint-plugin-import": "^1.13.0",
     "eslint_d": "^4.0.1",
     "file-loader": "^0.9.0",
+    "ng-annotate": "1.2.1",
     "ng-annotate-loader": "^0.1.1",
     "node-sass": "^3.8.0",
     "raw-loader": "^0.5.1",

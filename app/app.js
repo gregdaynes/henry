@@ -8,9 +8,9 @@ import 'angular-locker';
 
 import run from './run';
 import config from './config';
+import registerServices from './services';
 import registerDirectives from './directives';
 import registerViews from './views';
-import registerServices from './services';
 import registerConstants from './constants';
 
 window.CodeMirror = CodeMirror; /* global window */
@@ -24,7 +24,7 @@ const ngModule = angular.module('henry', [
 run(ngModule);
 config(ngModule);
 
+registerServices(ngModule);
 registerConstants(ngModule);
 registerViews(ngModule);
 registerDirectives(ngModule);
-registerServices(ngModule);

@@ -2,6 +2,8 @@ import 'angular-ui-router';
 
 export default ngModule => {
     ngModule.config(($stateProvider, $urlRouterProvider) => {
+        'ngInject';
+
         $urlRouterProvider.otherwise('/login');
 
         // $comileProvider.aHrefSanitizationWhitelist(/^\s*(data|https?|http):/);
