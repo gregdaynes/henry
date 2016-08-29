@@ -5,12 +5,20 @@
     <title>Meet Henry</title>
 
 <body>
-    <header ui-view="header"></header>
+    <fieldset>
+        <legend>Header</legend>
+        <header ui-view="header"></header>
+    </fieldset>
 
-    <main>
-        <div ui-view></div>
-    </main>
+    <fieldset>
+        <legend>Main</legend>
+        <main ui-view></main>
+    </fieldset>
 
-    <footer ui-view="footer"></footer>
+    <fieldset>
+        <legend>Footer</legend>
+        <footer ui-view="footer"></footer>
+    </fieldset>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/codemirror.min.js"></script>
     <script src="henry.js"></script>

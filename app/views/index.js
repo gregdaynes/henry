@@ -1,9 +1,11 @@
 import login from './login';
 import repo from './repo';
-import editor from './editor';
+import repoList from './repo-list';
+import repoCode from './repo-code';
 
 export default ngModule => {
     ngModule.config(login);
     ngModule.config(repo);
-    ngModule.config(editor);
+    ngModule.config(repoList);
+    ngModule.config(repoCode);
 };

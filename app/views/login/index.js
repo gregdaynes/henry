@@ -1,4 +1,4 @@
-import controller from './login';
+import controller from './login.controller';
 
 export default ($stateProvider) => {
     $stateProvider
@@ -8,9 +8,9 @@ export default ($stateProvider) => {
             pageTitle: 'Login',
             views: {
                 '@': {
-                    template: require('./login.html'),
                     controller,
                     controllerAs: 'vm',
+                    template: require('./login.template.html'),
                 },
             },
         });
