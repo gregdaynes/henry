@@ -12,7 +12,7 @@ export default ($stateProvider) => {
                 '@': {
                     controller,
                     controllerAs: 'vm',
-                    template: require('./login.template.html'),
+                    template: '<login-form state="vm.authorized" login="vm.login" logout="vm.logout"></login-form>',
                 },
             },
         });
