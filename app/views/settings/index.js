@@ -16,8 +16,8 @@ export default ($stateProvider) => {
                 },
             },
             resolve: {
-                user: $user => $user.get(),
-                config: $config => $config.get(),
+                user: userService => userService.get(),
+                config: configService => configService.get(),
             },
         });
 };

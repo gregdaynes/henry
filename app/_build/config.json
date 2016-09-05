@@ -1,4 +1,14 @@
 {
     "repo": "henry",
-    "branch": "gh-pages"
+    "branch": "gh-pages",
+
+    "henry": {
+        "version": "0.1.0",
+        "update": {
+            "owner": "gregdaynes",
+            "repo": "henry",
+            "branch": "master",
+            "versionFile": "version.json"
+        }
+    }
 }
