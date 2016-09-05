@@ -25,8 +25,8 @@ export default ($stateProvider) => {
                 file: null,
             },
             resolve: {
-                user: $user => $user.get(),
-                config: $config => $config.get(),
+                user: userService => userService.get(),
+                config: configService => configService.get(),
                 file: ($stateParams) => $stateParams.file,
             },
         });

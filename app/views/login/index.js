@@ -4,7 +4,7 @@ export default ($stateProvider) => {
     'ngInject';
 
     $stateProvider
-        .state('root.login', {
+        .state('login', {
             url: '/login',
             current: 'login',
             pageTitle: 'Login',

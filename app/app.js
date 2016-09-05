@@ -14,7 +14,7 @@ import registerDirectives from './directives';
 import registerViews from './views';
 import registerConstants from './constants';
 
-require('./app.scss');
+// require('./app.scss');
 
 window.CodeMirror = CodeMirror; /* global window */
 

@@ -14,7 +14,7 @@ export default ngModule => {
                 abstract: true,
                 pageTitle: 'Meet Henry',
                 views: {
-                    header: { template: require('./views/header/template.html') },
+                    header: { template: require('./views/header/header.template.html') },
                     // footer: { template: require('./views/footer/template.html') },
                 },
             });
