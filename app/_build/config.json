@@ -7,8 +7,9 @@
         "update": {
             "owner": "gregdaynes",
             "repo": "henry",
-            "branch": "master",
-            "versionFile": "version.json"
+            "branch": "feature/settings",
+            "versionFile": "app/package.json",
+            "dist": "app/dist/henry.js"
         }
     }
 }
