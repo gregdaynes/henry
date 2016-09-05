@@ -1,4 +1,4 @@
-export default function BreadcrumController($scope, $breadcrumb) {
+export default function BreadcrumController($scope, breadcrumbService) {
     'ngInject';
 
     const vm = this;
@@ -8,12 +8,10 @@ export default function BreadcrumController($scope, $breadcrumb) {
 
     init();
 
-    $breadcrumb.onUpdate($scope, (data) => {
-        return prepareBreadcrumbs(data);
-    });
+    breadcrumbService.onUpdate($scope, (data) => prepareBreadcrumbs(data));
 
     function init() {
-        return $breadcrumb.get()
+        return breadcrumbService.get()
             .then(response => prepareBreadcrumbs(response));
     }
 
@@ -27,6 +25,6 @@ export default function BreadcrumController($scope, $breadcrumb) {
         if (!root) newPath = vm.currentPath.slice(0, index + 1);
 
         vm.currentPath = newPath;
-        $breadcrumb.set(newPath.join('/'));
+        breadcrumbService.set(newPath.join('/'));
     }
 }

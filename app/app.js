@@ -1,3 +1,4 @@
+
 import CodeMirror from 'codemirror';
 
 import angular from 'angular';
@@ -12,6 +13,8 @@ import registerServices from './services';
 import registerDirectives from './directives';
 import registerViews from './views';
 import registerConstants from './constants';
+
+// require('./app.scss');
 
 window.CodeMirror = CodeMirror; /* global window */
 

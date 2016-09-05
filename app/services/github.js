@@ -1,4 +1,4 @@
-import Github from "github-api";
+import Github from 'github-api';
 
 let github = null;
 
@@ -12,26 +12,29 @@ export default function gh() {
         if (arguments.length === 2) {
             return login(arguments);
         }
+        
+        return Promise.resolve()
+            .then(() => {
+                if (github) return github;
 
-        return github;
+                return new Github();
+            });
     };
 }
 
 function login(args) {
     console.log('new login');
 
-    github = new Github({ 
-        username: args[0], 
+    github = new Github({
+        username: args[0],
         password: args[1],
     });
 
-    return github;
+    return Promise.resolve().then(() => github);
 }
-
-
 
 function logout() {
     github = null;
 
-    return github;
+    return Promise.resolve().then(() => github);
 }

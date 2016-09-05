@@ -1,4 +1,4 @@
-export default function repoViewController($scope, $log, $user, $github, $location, $file, $state, $breadcrumb, user, config, file) {
+export default function repoViewController($scope, $log, userService, githubService, $location, fileService, $state, breadcrumbService, user, config, file) {
     'ngInject';
 
     const vm = this;
@@ -14,19 +14,26 @@ export default function repoViewController($scope, $log, $user, $github, $locati
         },
     };
 
-    const gh = $github().getRepo(user.login, config.data.repo);
+
+    let gh = null;
 
     vm.save = save;
 
     init();
 
-    $breadcrumb.onUpdate($scope, () => {
+    breadcrumbService.onUpdate($scope, () => {
         $state.go('root.repo.list');
     });
 
     function init() {
-        if (!file[1].data.sha) return;
-        gh.getBlob(file[1].data.sha)
+        if (!file[1].data.sha) return null;
+
+        return githubService()
+            .then(github => {
+                gh = github.getRepo(user.login, config.data.repo);
+                return gh;
+            })
+            .then(response => response.getBlob(file[1].data.sha))
             .then(blob => {
                 vm.file.data.contents = blob.data;
                 $scope.$apply();
