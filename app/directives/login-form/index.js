@@ -1,8 +1,8 @@
-import controller from './controller';
+import controller from './login-form.controller';
 
 export default ngModule => {
     ngModule.directive('loginForm', () => {
-        require('./style.scss');
+        require('./login-form.style.scss');
 
         return {
             controller,
@@ -11,7 +11,7 @@ export default ngModule => {
                 login: '=login',
                 logout: '=logout',
             },
-            template: require('./template.html'),
+            template: require('./login-form.template.html'),
             controllerAs: 'vm',
             bindToController: true,
             // link: (scope, element, attrs, vm) => {

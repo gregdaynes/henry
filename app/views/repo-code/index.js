@@ -1,6 +1,8 @@
 import controller from './repo-code.controller';
 
 export default ($stateProvider) => {
+    'ngInject';
+
     require('codemirror/lib/codemirror.css');
     require('codemirror/theme/neo.css');
 
@@ -23,8 +25,8 @@ export default ($stateProvider) => {
                 file: null,
             },
             resolve: {
-                user: $user => $user.get(),
-                config: $config => $config.get(),
+                user: userService => userService.get(),
+                config: configService => configService.get(),
                 file: ($stateParams) => $stateParams.file,
             },
         });

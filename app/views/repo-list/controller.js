@@ -1,34 +1,42 @@
-export default function repoController($scope, $log, $user, $github, $location, $file, $state, $breadcrumb, user, config) {
+export default function repoController($scope, $log, userService, githubService, $location, fileService, $state, breadcrumbService, user, config) {
+    'ngInject';
+
     const vm = this;
 
     vm.list = null;
-    vm.currentPath = null;
+    vm.currentPath = '';
 
-    const gh = $github().getRepo(user.login, config.data.repo);
+    let gh = null;
 
     vm.openItem = openItem;
     vm.newFile = newFile;
 
     init();
 
-    $breadcrumb.onUpdate($scope, (data) => {
+    breadcrumbService.onUpdate($scope, (data) => {
         getContents(data);
     });
 
     function init() {
-        $breadcrumb.get()
-            .then(response => getContents(response));
+        return Promise.all([
+            githubService(),
+            breadcrumbService.get(),
+        ])
+        .then(response => {
+            gh = response[0].getRepo(user.login, config.data.repo);
+            getContents(response[1]);
+        });
     }
 
     function openItem(item) {
-        $breadcrumb.set(item.path);
+        breadcrumbService.set(item.path);
         // if (item.type === 'dir') getContents(item.path);
         if (item.type === 'file') getFileContents(item);
     }
 
     function getFileContents(item) {
         return gh.getContents(config.data.branch, item.path)
-            .then(response => $file(response))
+            .then(response => fileService(response))
             .then(response => {
                 $state.go('root.repo.code', { file: response });
                 // vm.list = response.data;
@@ -48,10 +56,10 @@ export default function repoController($scope, $log, $user, $github, $location, 
 
     function newFile() {
         const file = ['text', { data: { name: 'new file.txt' } }];
-        $breadcrumb.get()
+        breadcrumbService.get()
             .then(response => {
                 file[1].data.path = response;
-                return $breadcrumb.set(`${response}/new file.txt`, false);
+                return breadcrumbService.set(`${response}/new file.txt`, false);
             })
             .then(() => {
                 $state.go('root.repo.code', { file });

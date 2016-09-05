@@ -1,8 +1,8 @@
-export default function repoViewController($scope, $log, $user, $github, $location, $file, $state, $breadcrumb, user, config, file) {
+export default function repoViewController($scope, $log, userService, githubService, $location, fileService, $state, breadcrumbService, user, config, file) {
+    'ngInject';
+
     const vm = this;
     vm.file = file[1];
-    const originalFilename = angular.copy(file[1].data.name); /* global angular */
-    const originalPath = angular.copy(file[1].data.path);
 
     vm.codemirrorConfig = {
         lineNumbers: true,
@@ -14,19 +14,26 @@ export default function repoViewController($scope, $log, $user, $github, $locati
         },
     };
 
-    const gh = $github().getRepo(user.login, config.data.repo);
+
+    let gh = null;
 
     vm.save = save;
 
     init();
 
-    $breadcrumb.onUpdate($scope, () => {
+    breadcrumbService.onUpdate($scope, () => {
         $state.go('root.repo.list');
     });
 
     function init() {
-        if (!file[1].data.sha) return;
-        gh.getBlob(file[1].data.sha)
+        if (!file[1].data.sha) return null;
+
+        return githubService()
+            .then(github => {
+                gh = github.getRepo(user.login, config.data.repo);
+                return gh;
+            })
+            .then(response => response.getBlob(file[1].data.sha))
             .then(blob => {
                 vm.file.data.contents = blob.data;
                 $scope.$apply();
@@ -34,31 +41,15 @@ export default function repoViewController($scope, $log, $user, $github, $locati
     }
 
     function save() {
-        let path;
+        const newFile = preparePath();
 
-        if (originalFilename === vm.file.data.name) {
-            path = Promise.resolve().then(() => originalPath);
-        } else {
-            path = moveFile();
-        }
-
-        return path
-            .then(response => gh.writeFile(config.data.branch, response, vm.file.data.contents, 'testing', { encode: true }))
-            .then(response => {
-                console.log(response);
-            });
+        gh.writeFile(config.data.branch, newFile, vm.file.data.contents, '', { encode: true });
     }
 
-    function updatePath() {
-        const path = file[1].data.path.split('/');
-        path[path.length - 1] = vm.file.data.name;
+    function preparePath() {
+        const existingPath = file[1].data.path.split('/');
+        if (existingPath[existingPath.length - 1] === vm.file.data.name) return file[1].data.path;
 
-        return path.join('/');
-    }
-
-    function moveFile() {
-        const updatedPath = updatePath();
-
-        return gh.move(config.data.branch, originalPath, updatedPath);
+        return `${file[1].data.path}/${vm.file.data.name}`;
     }
 }

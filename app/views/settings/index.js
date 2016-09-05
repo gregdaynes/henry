@@ -1,21 +1,18 @@
-import controller from './controller';
+import controller from './settings.controller';
 
 export default ($stateProvider) => {
     'ngInject';
 
     $stateProvider
-        .state('root.repo.list', {
-            url: '/list',
-            current: 'list',
-            pageTitle: 'Repository List',
+        .state('root.settings', {
+            url: '/settings',
+            current: 'settings',
+            pageTitle: 'Setings',
             views: {
-                breadcrumb: {
-                    template: '<div breadcrumb></div>',
-                },
-                '': {
+                '@': {
                     controller,
                     controllerAs: 'vm',
-                    template: require('./template.html'),
+                    template: require('./settings.template.html'),
                 },
             },
             resolve: {

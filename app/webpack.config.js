@@ -1,9 +1,24 @@
+const webpack = require('webpack');
+const path = require('path');
+
+const plugins = [];
+const entry = './app.js';
+const output = {
+    path: path.join(__dirname, '/_build'),
+    filename: 'henry.js',
+};
+
+if (process.env.NODE_ENV === 'production') {
+    plugins.push(new webpack.optimize.UglifyJsPlugin());
+
+    output.path = path.join(__dirname, '../dist');
+}
+
 module.exports = {
-    entry: './app.js',
-    output: {
-        path: __dirname +'/_build',
-        filename: 'henry.js',
-    },
+    entry,
+    output,
+    plugins,
+
     module: {
         loaders: [
             { test: /\.js$/, loader: 'ng-annotate!babel', exclude: /node_modules/ },

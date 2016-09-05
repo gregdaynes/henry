@@ -1,4 +1,6 @@
 export default function ConfigService($log, $http, locker) {
+    'ngInject';
+
     const localStorage = locker.namespace('henry');
     let config = null;
 
