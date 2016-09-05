@@ -1,15 +1,17 @@
 {
     "repo": "henry",
     "branch": "gh-pages",
+    "path": "assets/js/henry.js",
+    "configPath": "config.json",
 
     "henry": {
-        "version": "0.1.0",
+        "version": "1.0.0",
         "update": {
             "owner": "gregdaynes",
             "repo": "henry",
-            "branch": "feature/settings",
+            "branch": "master",
             "versionFile": "app/package.json",
-            "dist": "app/dist/henry.js"
+            "dist": "dist/henry.js"
         }
     }
 }
