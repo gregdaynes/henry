@@ -2,7 +2,10 @@ export default function updateService($log, githubService) {
     'ngInject';
 
     let gh = null;
+    let localGh = null;
     let config = null;
+    let newVersion = null;
+    let currentVersion = null;
 
     const service = {
         init,
@@ -15,16 +18,24 @@ export default function updateService($log, githubService) {
     // --------------------------------
 
     function init(cfg, user) {
-        config = cfg.data.henry;
+        config = cfg.data;
+        currentVersion = config.henry.version;
 
         return githubService()
-            .then(response => response.getRepo(user.login, config.update.repo))
-            .then(setGh);
+            .then(response => Promise.all([
+                response.getRepo(user.login, config.henry.update.repo),
+                response.getRepo(user.login, config.repo),
+            ]))
+            .then(session => {
+                gh = session[0];
+                localGh = session[1];
+                return gh;
+            });
     }
 
     function checkUpdate() {
         return getManifest()
-            .then(manifest => compareVersion(config.version, manifest.data.version))
+            .then(remoteVersion => compareVersion(currentVersion, remoteVersion))
             .then(newVersion => {
                 if (newVersion) return newVersion;
 
@@ -35,33 +46,33 @@ export default function updateService($log, githubService) {
 
     function update() {
         return getManifest()
-            .then(manifest => compareVersion(config.version, manifest.data.version))
+            .then(remoteVersion => compareVersion(currentVersion, remoteVersion))
             .then(newVersion => {
                 if (newVersion) return newVersion;
 
                 throw new Error();
             })
-            .then(getUpdate)
+            .then(getRemoteFile)
+            .then(updateLocalVersion)
+            .then(response => {
+                $log.info('update complete. Please refresh your browser.');
+                return response;
+            })
 
             .catch(err => {
                 $log.error(err);
                 throw new Error(err);
             });
-
-        // get contents of update
-        // write contents to local henry
-        // return update complete
     }
 
     // --------------------------------
 
-    function setGh(data) {
-        gh = data;
-        return Promise.resolve().then(() => gh);
-    }
-
     function getManifest() {
-        return gh.getContents(config.update.branch, config.update.versionFile, true);
+        return gh.getContents(config.henry.update.branch, config.henry.update.versionFile, true)
+            .then(remote => {
+                newVersion = remote.data.version;
+                return remote.data.version;
+            });
     }
 
     function compareVersion(first, second) {
@@ -77,7 +88,24 @@ export default function updateService($log, githubService) {
         return promise.then(() => second);
     }
 
-    function getUpdate() {
-        
+    function getRemoteFile() {
+        return gh.getContents(config.henry.update.branch, config.henry.update.dist, true);
+    }
+
+    function updateLocalVersion(remoteFile) {
+        return localGh.writeFile(config.branch, config.path, remoteFile.data, 'updating to latest version', { encode: true })
+            .then(() => {
+                config.henry.version = newVersion;
+                const configLocation = configPath();
+                return localGh.writeFile(config.branch, configLocation, JSON.stringify(config), 'version bumping', { encode: true });
+            });
+    }
+
+    function configPath() {
+        if (config.configPath) return config.configPath;
+
+        const parts = config.configPath.split('/').pop();
+        parts.push('config.json');
+        return parts.concat('/');
     }
 }

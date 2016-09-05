@@ -1,10 +1,10 @@
-export default function SettingsController(updateService, configService, config, user) {
+export default function SettingsController($scope, updateService, configService, config, user) {
     'ngInject';
 
-    // const vm = this;
-    // vm.update = null;
-    // const github = githubService(username, password);
-        // const user = github.getUser();
+    const vm = this;
+    vm.updateAvailable = false;
+
+    vm.update = update;
 
     activate();
 
@@ -13,9 +13,15 @@ export default function SettingsController(updateService, configService, config,
     function activate() {
         return updateService.init(config, user)
             .then(updateService.checkUpdate)
-            .then(console.log);
+            .then(response => {
+                console.log(response);
+                vm.updateAvailable = response;
+                $scope.$apply();
+            });
     }
 
-    // function handleUpdateStatus(updateStatus) {
-    // }
+    function update() {
+        return updateService.update()
+            .then(console.log);
+    }
 }
